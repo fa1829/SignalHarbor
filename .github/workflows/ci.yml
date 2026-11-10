@@ -1,0 +1,32 @@
+name: ci
+on: [push, pull_request]
+permissions:
+  contents: read
+  security-events: write   # upload SARIF to code scanning
+jobs:
+  test-and-gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Lint
+        run: ruff check app scripts tests
+      - name: SAST (bandit)
+        run: bandit -q -r app scripts -ll
+      - name: Dependency audit
+        run: pip-audit -r requirements.txt
+      - name: Unit tests
+        run: pytest -q
+      - name: Dogfood — gate our own deployment files
+        run: |
+          python -m app.cli config deploy/k8s/signalharbor.yaml --fail-on low --sarif k8s.sarif
+          python -m app.cli config compose.yaml --fail-on medium
+      - name: Demo — risky manifest is blocked (expected to fail)
+        run: |
+          if python -m app.cli config examples/insecure-deployment.yaml --fail-on high --sarif demo.sarif; then
+            echo "gate should have failed"; exit 1; fi
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with: {sarif_file: demo.sarif, category: signalharbor-demo}

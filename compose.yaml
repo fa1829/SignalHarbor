@@ -1,0 +1,21 @@
+services:
+  signalharbor:
+    build: .
+    ports:
+      - "127.0.0.1:8088:8088"
+    environment:
+      SIGNALHARBOR_DB: /srv/data/signalharbor.db
+      # Set a password in your shell, e.g. export SIGNALHARBOR_PASSWORD='...'
+      SIGNALHARBOR_PASSWORD: ${SIGNALHARBOR_PASSWORD:-}
+      SIGNALHARBOR_USER: ${SIGNALHARBOR_USER:-admin}
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - signalharbor-data:/srv/data
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+volumes:
+  signalharbor-data:

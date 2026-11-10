@@ -1,0 +1,33 @@
+$ bash scripts/wsl-setup.sh --no-apt
+
+[1/7] Checking environment
+  ! Not WSL — continuing as a regular Linux install
+  ✔ Project directory: ~/SignalHarbor
+
+[2/7] System packages
+  ! Skipping apt (--no-apt)
+  ✔ Using Python 3.13.18 at /usr/local/bin/python3.13
+
+[3/7] Virtual environment and dependencies
+  ✔ Created .venv
+  ✔ Dependencies installed (58 packages)
+
+[4/7] Configuration (.env)
+  ✔ Created .env with a random password and audit key (permissions 600)
+
+[5/7] Self-test
+39 passed, 1 warning in 1.89s
+  ✔ Own Kubernetes manifest passes the SignalHarbor gate
+
+[6/7] Background service
+  ✔ Not requested (add --service, or run later: bash scripts/wsl-service.sh install)
+
+[7/7] Done
+
+  Start:     cd ~/SignalHarbor && .venv/bin/python run.py      (or: make run)
+  Open:      http://localhost:8088   ← in your Windows browser
+  Sign in:   user 'admin', password = SIGNALHARBOR_PASSWORD in ~/SignalHarbor/.env
+             (show it with:  grep PASSWORD ~/SignalHarbor/.env)
+  Stop:      Ctrl+C   (or: bash scripts/wsl-service.sh stop)
+  Guide:     docs/WSL_DEPLOYMENT.md
+

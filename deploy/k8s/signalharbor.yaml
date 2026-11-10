@@ -1,0 +1,59 @@
+# Hardened single-replica deployment for a lab cluster (kind/minikube/k3d).
+# CI scans this file with SignalHarbor itself:  python -m app.cli config deploy/k8s/signalharbor.yaml --fail-on low
+# Build and load the image first, e.g.:  docker build -t signalharbor:1.1.0 . && kind load docker-image signalharbor:1.1.0
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signalharbor
+  labels: {app: signalharbor}
+spec:
+  replicas: 1                      # SQLite = single writer; do not scale horizontally
+  selector:
+    matchLabels: {app: signalharbor}
+  template:
+    metadata:
+      labels: {app: signalharbor}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: signalharbor
+          image: signalharbor:1.1.0
+          imagePullPolicy: IfNotPresent
+          ports: [{containerPort: 8088}]
+          env:
+            - {name: SIGNALHARBOR_DB, value: /srv/data/signalharbor.db}
+            - {name: SIGNALHARBOR_INSECURE_BIND_OK, value: "1"}   # reachable only through the ClusterIP + port-forward below
+            - name: SIGNALHARBOR_PASSWORD
+              valueFrom: {secretKeyRef: {name: signalharbor-auth, key: password}}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 50m, memory: 128Mi}
+            limits: {cpu: 500m, memory: 384Mi}
+          readinessProbe:
+            httpGet: {path: /api/health, port: 8088}
+            periodSeconds: 10
+          volumeMounts:
+            - {name: data, mountPath: /srv/data}
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        - name: data
+          emptyDir: {}             # lab only: replace with a PersistentVolumeClaim to keep data
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: signalharbor
+spec:
+  type: ClusterIP                  # access with: kubectl port-forward svc/signalharbor 8088:8088
+  selector: {app: signalharbor}
+  ports: [{port: 8088, targetPort: 8088}]

@@ -1,0 +1,93 @@
+{
+  "exercise": "Q4 identity and cloud purple team (synthetic)",
+  "tool": "Atomic Red Team + manual",
+  "results": [
+    {
+      "technique_id": "T1110.003",
+      "technique": "Password Spraying",
+      "tactic": "credential-access",
+      "test": "Spray 20 accounts from one host",
+      "alerted": true,
+      "time_to_detect_s": 240
+    },
+    {
+      "technique_id": "T1003.001",
+      "technique": "LSASS Memory",
+      "tactic": "credential-access",
+      "test": "comsvcs.dll MiniDump",
+      "prevented": true
+    },
+    {
+      "technique_id": "T1558.003",
+      "technique": "Kerberoasting",
+      "tactic": "credential-access",
+      "test": "Request RC4 service tickets",
+      "detected": true
+    },
+    {
+      "technique_id": "T1078.004",
+      "technique": "Cloud Accounts",
+      "tactic": "initial-access",
+      "test": "Sign-in with test credential from new ASN",
+      "alerted": true,
+      "time_to_detect_s": 1800
+    },
+    {
+      "technique_id": "T1098.003",
+      "technique": "Additional Cloud Roles",
+      "tactic": "persistence",
+      "test": "Assign Global Reader to test service principal",
+      "alerted": true,
+      "time_to_detect_s": 1500
+    },
+    {
+      "technique_id": "T1528",
+      "technique": "Steal Application Access Token",
+      "tactic": "credential-access",
+      "test": "Illicit consent grant to test app"
+    },
+    {
+      "technique_id": "T1562.001",
+      "technique": "Disable or Modify Tools",
+      "tactic": "defense-evasion",
+      "test": "Stop EDR service on lab host",
+      "alerted": true,
+      "time_to_detect_s": 60
+    },
+    {
+      "technique_id": "T1059.001",
+      "technique": "PowerShell",
+      "tactic": "execution",
+      "test": "Encoded command download cradle",
+      "prevented": true
+    },
+    {
+      "technique_id": "T1021.002",
+      "technique": "SMB/Windows Admin Shares",
+      "tactic": "lateral-movement",
+      "test": "Remote service creation",
+      "detected": true
+    },
+    {
+      "technique_id": "T1087.002",
+      "technique": "Domain Account",
+      "tactic": "discovery",
+      "test": "Enumerate Domain Admins group"
+    },
+    {
+      "technique_id": "T1567.002",
+      "technique": "Exfiltration to Cloud Storage",
+      "tactic": "exfiltration",
+      "test": "Upload 50 MB canary file",
+      "alerted": true,
+      "time_to_detect_s": 2100
+    },
+    {
+      "technique_id": "T1486",
+      "technique": "Data Encrypted for Impact",
+      "tactic": "impact",
+      "test": "Encrypt canary folder on lab host",
+      "prevented": true
+    }
+  ]
+}

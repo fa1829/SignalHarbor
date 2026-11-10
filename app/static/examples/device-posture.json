@@ -1,0 +1,8 @@
+{
+  "device_id": "lab-workstation-007",
+  "disk_encrypted": true,
+  "screen_lock": true,
+  "patch_age_days": 68,
+  "edr_running": true,
+  "backup_encrypted": false
+}

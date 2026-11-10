@@ -1,0 +1,9 @@
+cve,asset,title,cvss,epss,kev,internet_exposed,asset_criticality,first_seen,fix_available
+CVE-2099-0001,payments-gateway-01,Synthetic: auth bypass in VPN appliance,9.8,0.94,true,true,crown_jewel,2026-10-20,true
+CVE-2099-0002,hr-portal,Synthetic: deserialization in web framework,8.8,0.62,false,true,high,2026-10-28,true
+CVE-2099-0003,build-runner-03,Synthetic: privilege escalation in container runtime,7.8,0.21,false,false,high,2026-09-15,true
+CVE-2099-0004,file-share-02,Synthetic: SMB information disclosure,6.5,0.02,false,false,medium,2026-08-01,true
+CVE-2099-0005,marketing-site,Synthetic: XSS in CMS plugin,6.1,0.004,false,true,low,2026-10-30,true
+CVE-2099-0006,trading-db-01,Synthetic: SQL engine RCE (no patch yet),9.1,0.08,false,false,crown_jewel,2026-11-02,false
+CVE-2099-0007,dev-laptop-pool,Synthetic: browser memory corruption,8.1,0.35,true,false,medium,2026-11-01,true
+CVE-2099-0008,legacy-ftp,Synthetic: weak cipher configuration,5.3,0.01,false,true,low,2026-06-12,true

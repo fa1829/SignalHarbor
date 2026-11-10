@@ -1,0 +1,7 @@
+# Project lint policy (CI runs `ruff check app scripts tests`)
+line-length = 140
+target-version = "py310"
+
+[lint]
+select = ["E", "F", "W", "B", "I", "UP"]
+ignore = ["B008", "E501"]  # B008: FastAPI File(...)/Depends(...) idiom; E501: dense legacy lines kept as-is
